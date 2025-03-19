@@ -8,8 +8,11 @@ from preprocess import get_cleaned_dataset
 from utils.model_utils import load_base_model
 from evaluate import compute_metrics
 
+device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+print(f"Device: {device}")
+
 raw_dataset = get_cleaned_dataset()
-tokenizer, model = load_base_model()
+tokenizer, model = load_base_model(device=device)
 
 print("Model loaded successfully!")
 print(model)
@@ -27,9 +30,9 @@ training_args = TrainingArguments(
     output_dir="./models/checkpoints",
     eval_strategy="epoch",
     save_strategy="epoch",
-    per_device_train_batch_size=8,
-    per_device_eval_batch_size=8,
-    num_train_epochs=5,
+    per_device_train_batch_size=8, # Edit this value based on your GPU VRAM
+    per_device_eval_batch_size=8, # Edit this value based on your GPU VRAM
+    num_train_epochs=5, # Edit this value based on your dataset
     weight_decay=0.01,
     learning_rate=5e-5,
     optim="adamw_torch_fused",

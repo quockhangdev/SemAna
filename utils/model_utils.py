@@ -4,7 +4,7 @@ from transformers import (
 import torch
 
 def load_base_model(
-    num_labels=2, label2id={"neg": 0, "pos": 1}, id2label={0: "neg", 1: "pos"}
+    num_labels=2, label2id={"neg": 0, "pos": 1}, id2label={0: "neg", 1: "pos"}, device="cpu"
 ):
     tokenizer = AutoTokenizer.from_pretrained("answerdotai/ModernBERT-base")
     tokenizer.model_max_length = 512
@@ -14,6 +14,20 @@ def load_base_model(
         num_labels=num_labels, label2id=label2id, id2label=id2label,
     )
 
+    model.to(device)
+
+    return tokenizer, model
+
+def load_model(device="cpu"):
+    tokenizer = AutoTokenizer.from_pretrained("answerdotai/ModernBERT-base")
+    tokenizer.model_max_length = 512
+
+    model = ModernBertForSequenceClassification.from_pretrained(
+        "answerdotai/ModernBERT-base",
+    )
+
+    model.to(device)
+    
     return tokenizer, model
 
 if __name__ == "__main__":

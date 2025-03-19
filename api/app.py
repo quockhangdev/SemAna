@@ -1,6 +1,8 @@
 import litserve as ls
 import random
 from pydantic import BaseModel
+from predict import predict
+from utils.model_utils import load_model
 random.seed(42)
 
 class InputRequest(BaseModel):
@@ -11,14 +13,16 @@ class OutputResponse(BaseModel):
 
 class SemAnaAPI(ls.LitAPI):
     def setup(self, device):
-        self.model = lambda x: random.uniform(0, 1)
+        print("Loading model and tokenizer... using device: ", device)
+        t, m = load_model(device=device)
+        self.tokenizer = t
+        self.model = m
         
     def decode_request(self, request: InputRequest, context):
         return request.text
     
     def predict(self, x):
-        prediction = self.model(x)
-        output = "positive" if prediction > 0.5 else "negative"
+        output = predict(self.model, self.tokenizer, x)
         return output
     
     def encode_response(self, output, context):
