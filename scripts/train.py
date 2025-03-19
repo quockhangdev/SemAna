@@ -39,7 +39,16 @@ training_args = TrainingArguments(
     logging_strategy="steps",
     logging_steps=100,
     metric_for_best_model="f1",
+    load_best_model_at_end=True,
 )
+
+if device.type == "cuda":
+    training_args.gpus = 1
+    training_args.bf16 = True # Mixed precision training
+    # training_args.fp16 = True # Mixed precision training
+    # training_args.fp16_opt_level = "O1" # Mixed precision training
+
+print("Training arguments created successfully!", training_args)
 
 trainer = Trainer(
     model=model,
@@ -48,6 +57,9 @@ trainer = Trainer(
     eval_dataset=tokenized_dataset["test"],
     compute_metrics=compute_metrics,
 )
+
+print("Trainer created successfully!")
+print("Training started!")
 
 trainer.train()
 trainer.save_model("./models/final_model")
