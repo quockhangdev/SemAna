@@ -3,3 +3,4 @@ models/checkpoints/
 models/final_model/
 *.pyc
 *.pkl
+.DS_Store

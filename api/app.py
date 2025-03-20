@@ -1,3 +1,5 @@
+import sys
+sys.path.append(".")
 import litserve as ls
 import random
 from pydantic import BaseModel
@@ -13,6 +15,8 @@ class OutputResponse(BaseModel):
 
 class SemAnaAPI(ls.LitAPI):
     def setup(self, device):
+        if device == "mps:0": # MPS is not supported
+            device = "cpu"
         print("Loading model and tokenizer... using device: ", device)
         t, m = load_model(device=device)
         self.tokenizer = t

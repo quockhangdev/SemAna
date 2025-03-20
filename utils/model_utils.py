@@ -1,3 +1,5 @@
+import sys
+sys.path.append(".")
 from transformers import (
     AutoTokenizer, ModernBertForSequenceClassification
 )
@@ -23,7 +25,7 @@ def load_model(device="cpu"):
     tokenizer.model_max_length = 512
 
     model = ModernBertForSequenceClassification.from_pretrained(
-        "answerdotai/ModernBERT-base",
+        pretrained_model_name_or_path="./models/final_model",
     )
 
     model.to(device)

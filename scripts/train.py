@@ -43,7 +43,7 @@ training_args = TrainingArguments(
 )
 
 if device.type == "cuda":
-    training_args.gpus = 1
+    training_args.gpus = 1 # Use 1 GPU
     training_args.bf16 = True # Mixed precision training
     # training_args.fp16 = True # Mixed precision training
     # training_args.fp16_opt_level = "O1" # Mixed precision training

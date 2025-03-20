@@ -1,5 +1,3 @@
-import sys
-sys.path.append(".")
 import torch
 
 __all__ = ["predict"]
@@ -14,8 +12,10 @@ def predict(model, tokenizer, text: str):
     return predicted_class
 
 if __name__ == "__main__":
-    from utils.model_utils import load_base_model
+    import sys
+    sys.path.append(".")
+    from utils.model_utils import load_model
     text = "I love this movie!"
-    tokenizer, model = load_base_model()
+    tokenizer, model = load_model()
     prediction = predict(model, tokenizer, text)
     print(prediction)
